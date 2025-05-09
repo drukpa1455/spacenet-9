@@ -1,0 +1,81 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Best practices for working with geospatial raster data using Rasterio
+globs: **/*.py
+---
+
+# Rasterio Development Best Practices
+
+## Dataset Access
+- Use context managers (`with rasterio.open() as dataset:`) to ensure proper resource cleanup
+- Access dataset attributes directly: `dataset.width`, `dataset.height`, `dataset.count`
+- Handle CRS properly with `dataset.crs` for coordinate reference system information
+- Check `dataset.driver` to determine the underlying file format driver
+- Access and set dataset metadata using `dataset.tags()` and `dataset.update_tags()`
+- Understand the difference between index (row/col) and coordinate (x/y) spaces
+- Use the appropriate read mode (`r`, `r+`, or `w`) based on your operation
+
+## Reading Data
+- Use `dataset.read()` for entire dataset or specify bands with `dataset.read(band_number)`
+- Implement windowed reading for efficient access to large datasets: `dataset.read(window=window)`
+- Create windows with `rasterio.windows.Window` for targeted data access
+- Apply masks with `masked=True` to handle nodata values automatically 
+- Access band masks directly using `dataset.dataset_mask()` or `dataset.read_masks()`
+- Use `dataset.sample()` to extract values at specific coordinates
+- Handle blocked datasets efficiently with `dataset.block_windows()`
+
+## Writing Data
+- Create output datasets with `rasterio.open()` in write mode and proper profile
+- Derive profiles from existing datasets with `dataset.profile`
+- Update profile parameters for new datasets as needed (e.g., driver, dimensions, dtype)
+- Write data with `dataset.write(data, indexes=band_number)`
+- Implement windowed writing for efficient processing of large datasets
+- Set nodata values explicitly in dataset profile and respect them in processing
+- Use `dataset.write_mask()` for updating dataset masks
+
+## Georeferencing and Coordinates
+- Understand and properly use `dataset.transform` for coordinate transformations
+- Convert between pixel (row/col) and geographic coordinates using `rasterio.transform`
+- Use `transform.xy()` for pixel to coordinate conversion
+- Use `transform.rowcol()` for coordinate to pixel conversion
+- Handle affine transformations correctly with `rasterio.Affine`
+- Apply geographic bounds checks with `dataset.bounds` or `rasterio.windows.bounds()`
+- Validate projections using `rasterio.crs.CRS` objects
+
+## Reprojection and Warping
+- Reproject datasets using `rasterio.warp.reproject` with appropriate parameters
+- Calculate output dimensions with `rasterio.warp.calculate_default_transform`
+- Choose appropriate resampling methods for your data type (e.g., bilinear, cubic, nearest)
+- Consider memory usage when reprojecting large datasets with windowed approaches
+- Use `rasterio.warp.transform_bounds` to transform bounding boxes between CRSs
+- Apply `rasterio.warp.transform_geom` to reproject GeoJSON geometries
+
+## Vector Integration
+- Extract vector features from raster data using `rasterio.features.shapes()`
+- Rasterize vector data with `rasterio.features.rasterize()`
+- Apply vector masks to rasters with `rasterio.mask.mask()`
+- Use proper geometry formats (GeoJSON-like) for vector operations
+- Set appropriate precision for vector outputs to avoid verbosity
+- Consider simplified geometries for performance when exact boundaries aren't required
+
+## Performance Optimization
+- Use windowed reading/writing for large datasets to reduce memory usage
+- Implement concurrent processing with proper resource management
+- Leverage numpy for efficient raster operations rather than pixel-by-pixel iteration
+- Use appropriate data types (e.g., `uint8`, `float32`) to optimize memory usage
+- Apply compression options for output files when appropriate
+- Create overviews for large datasets to improve visualization performance
+- Use in-memory datasets for intermediate processing with `rasterio.MemoryFile`
+
+## Error Handling
+- Implement proper error handling for common issues (file not found, permission denied)
+- Use `rasterio.errors` to catch and handle library-specific exceptions
+- Check for driver availability before operations with uncommon formats
+- Validate input data and parameters before processing operations
+- Handle potential race conditions when working with files concurrently
+- Verify CRS compatibility when combining multiple datasets
+- Ensure data types match expected values to avoid unexpected conversions 

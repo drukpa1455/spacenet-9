@@ -1,0 +1,6 @@
+[submodule "terratorch"]
+	path = terratorch
+	url = https://github.com/IBM/terratorch.git
+[submodule "torchgeo"]
+	path = torchgeo
+	url = https://github.com/microsoft/torchgeo.git

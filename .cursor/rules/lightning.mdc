@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Best practices for developing with Lightning AI (PyTorch Lightning and CLI)
+globs: **/*.py
+---
+
+# Lightning AI Development Best Practices
+
+## Core Architecture
+- Structure code using LightningModule for model organization
+- Keep forward method focused on inference logic only
+- Implement training_step, validation_step, and test_step methods
+- Move all optimization logic into configure_optimizers
+- Separate data processing from model logic
+- Use the Lightning CLI for configuration management
+- Inherit from LightningDataModule for data organization
+
+## Training Workflow
+- Use Trainer for all training orchestration
+- Configure training via Trainer arguments not custom loops
+- Leverage built-in callbacks for common tasks
+- Set precision appropriately for your hardware (16/32/64)
+- Implement proper early stopping strategies
+- Use learning rate finders to determine optimal rates
+- Enable gradient clipping when necessary
+
+## Data Management
+- Create custom LightningDataModule implementations
+- Keep all data processing logic in the DataModule
+- Implement prepare_data for downloading/preparation steps
+- Use setup method for dataset instantiation
+- Ensure train/val/test dataloaders follow the same patterns
+- Implement proper data transforms consistently
+- Use DistributedSampler for multi-GPU training
+
+## Metrics and Logging
+- Use TorchMetrics for all evaluation metrics
+- Create MetricCollection for grouped metrics
+- Configure appropriate loggers (TensorBoard, WandB, etc.)
+- Log metrics at appropriate intervals
+- Use self.log with on_step/on_epoch flags
+- Implement proper hyperparameter logging
+- Visualize model predictions periodically
+
+## Distributed Training
+- Design with multi-GPU training in mind from the start
+- Use appropriate strategy for your hardware (DDP, FSDP, etc.)
+- Configure accelerator and devices in Trainer
+- Be aware of global rank vs local rank in distributed code
+- Move data to appropriate device in forward methods
+- Use gather_all_tensors for distributed metrics
+- Set find_unused_parameters=False for DDP efficiency
+
+## Experiment Management
+- Use Lightning CLI for hyperparameter management
+- Implement proper experiment versioning
+- Structure config files hierarchically
+- Use config inheritance for experiment variations
+- Implement model checkpointing strategies
+- Save hyperparameters with self.save_hyperparameters()
+- Track experiments with appropriate logger
+
+## Deployment
+- Export models via Lightning's built-in tools
+- Use torch.jit.script or torch.onnx as needed
+- Leverage Lightning serving capabilities
+- Implement proper error handling for production
+- Design fault-tolerant inference pipelines
+- Ensure reproducibility with fixed random seeds
+- Optimize models appropriately for target hardware
+
+## Code Organization
+- Structure projects with clear separation of concerns
+- Use Lightning CLI to separate configuration from code
+- Implement modular components with clear interfaces
+- Organize by task or domain with common utilities
+- Keep configuration files in a dedicated directory
+- Implement proper logging and error handling
+- Document model architecture and requirements clearly 

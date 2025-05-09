@@ -1,0 +1,61 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Guidelines for effective AI-assisted development workflow
+globs: 
+alwaysApply: true
+---
+
+# AI-Assisted Development Workflow
+
+## Context Setting
+- Provide comprehensive context before asking for code
+- Share relevant files and project structure
+- Define clear boundaries of the task
+- Explain existing patterns and conventions
+- Communicate constraints and requirements clearly
+
+## Planning First
+- Ask for multiple approaches before implementation
+- Request pros/cons analysis of different solutions
+- Evaluate approaches based on project needs
+- Choose an approach deliberately before requesting code
+- Prioritize maintainability over clever solutions
+
+## Incremental Implementation
+- Focus on single, well-defined changes
+- Request draft code after approach is decided
+- Review code thoroughly before implementation
+- Keep changes small and manageable
+- Commit frequently with descriptive messages
+
+## Learning-Focused Review
+- Research unfamiliar functions and APIs independently
+- Verify all suggestions against official documentation
+- Ask for explanations of unfamiliar patterns
+- Don't accept solutions you don't understand
+- Use AI assistance as a learning opportunity
+
+## Verification and Testing
+- Test all AI-generated code thoroughly
+- Never trust code without verification
+- Write tests before or alongside implementation
+- Validate edge cases explicitly
+- Verify security implications of suggested code
+
+## Controlled Progression
+- Maintain control over the development direction
+- Consider but critically evaluate next-step suggestions
+- Plan the development path deliberately
+- Retain architectural decision-making authority
+- Use AI for implementation details, not major decisions
+
+## Defensive Coding
+- Be slow, careful, and paranoid with suggestions
+- Verify external API usage and best practices
+- Check for common security vulnerabilities
+- Consider error handling and edge cases
+- Review for performance implications 

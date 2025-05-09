@@ -1,0 +1,137 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Best practices for developing with TerraTorch for geospatial deep learning
+globs: **/*.py
+---
+
+# TerraTorch Development Best Practices
+
+## Core Architecture
+- Understand TerraTorch's extension of TorchGeo and integration with PyTorch Lightning
+- Leverage EncoderDecoderFactory for composing encoders, necks, decoders, and heads
+- Use appropriate foundation model backbones for your geospatial tasks:
+  - Prithvi for satellite imagery (multiple versions available)
+  - TerraMind for multi-modal tasks
+  - SatMAE/ScaleMAE for self-supervised learning
+  - Satlas/DOFA/SSL4EO models for transfer learning
+  - Clay for multi-sensor data
+- Follow the encoder-decoder-head design pattern with proper interfaces
+- Apply necks (SelectIndices, ReshapeTokensToImage, etc.) for connecting incompatible encoders and decoders
+- Implement proper Model interface with freeze_encoder(), freeze_decoder(), and forward() methods
+- Return ModelOutput objects from forward methods to support auxiliary heads
+
+## Registry System
+- Use BACKBONE_REGISTRY to access all registered model backbones
+- Use DECODER_REGISTRY for task-specific decoders
+- Use NECK_REGISTRY for adapter components
+- Register custom components with appropriate decorators (@TERRATORCH_BACKBONE_REGISTRY.register)
+- Access models through registry.build() with appropriate parameters
+- Place custom modules in a 'custom_modules' directory for CLI discoverability
+- Use registry prefixes (e.g., 'timm_', 'terratorch_') to target specific registries
+
+## Configuration Management
+- Use YAML configuration files for experiment definition
+- Leverage LightningCLI for training and inference
+- Define models, datasets, optimizers, and schedulers in configuration
+- Pass model factory parameters with appropriate prefixes:
+  - backbone_* for encoder parameters
+  - decoder_* for decoder parameters
+  - head_* for head parameters
+- Structure configurations hierarchically for better organization
+- Use configuration inheritance for experiment variations
+- Apply appropriate seeds for reproducibility
+- Configure logging and checkpointing properly
+- Reference example configurations in examples/confs as templates
+- Set appropriate precision flags (bf16/fp16) for efficient training
+
+## Data Handling
+- Choose appropriate dataset class based on your data:
+  - GeoDataset for geospatial data requiring sampling
+  - NonGeoDataset for pre-tiled datasets
+  - Generic datasets for directory-structured data
+- Implement proper band selection and ordering for multi-spectral data
+- Configure appropriate data transformations in datamodules
+- Use TorchGeoDataModule for georeferenced data
+- Use TorchNonGeoDataModule for non-georeferenced data
+- Set appropriate batch sizes and workers for efficient data loading
+- Handle data stackability issues with pad_correction or check_stackability=false
+- Handle multi-temporal data appropriately for time-series analysis
+
+## Model Composition
+- Follow TerraTorch's encoder-decoder-neck-head pattern
+- Ensure encoders return a list of tensors and have out_channels attribute
+- Configure decoder architectures compatible with your backbone
+- Use necks to bridge encoder-decoder incompatibilities:
+  - SelectIndices for choosing specific encoder outputs
+  - ReshapeTokensToImage for converting ViT tokens to spatial features
+  - InterpolateToPyramidal for creating pyramidal features
+- Add proper heads for your specific task (segmentation, regression, etc.)
+- Balance model complexity against available computational resources
+- Consider parameter-efficient fine-tuning (PEFT) for large models
+
+## Task Configuration
+- Select appropriate task classes for your use case:
+  - SemanticSegmentationTask for pixel classification
+  - PixelwiseRegressionTask for continuous pixel prediction
+  - ClassificationTask for image classification
+- Configure task-specific loss functions and metrics
+- Set proper learning rates and optimization parameters
+- Use mixed precision training (bf16/fp16) for efficiency
+- Apply learning rate schedulers for improved convergence
+- Configure validation frequency and evaluation metrics
+- Use callbacks for model checkpointing and learning rate monitoring
+- Implement early stopping and checkpoint strategies
+- Set proper freezing strategies for transfer learning
+- Configure auxiliary losses when using multiple heads
+
+## Model Configuration
+- Select appropriate backbone models for your tasks (Prithvi, SatMAE, Clay, etc.)
+- Configure decoder architectures compatible with your backbone
+- Set backbone-specific parameters (in_channels, bands, img_size)
+- Apply appropriate dropout and regularization
+- Configure model-specific post-backbone operations
+- Set proper freezing strategies for transfer learning
+- Balance model complexity against available computational resources
+- Consider weather models (wxc extension) for meteorological applications
+- Use appropriate input normalization for your chosen backbone
+- Set correct tensor dimensions for your data characteristics
+- Configure number of classes/outputs for your specific task
+- Apply task-appropriate activation functions in your heads
+
+## Inference and Deployment
+- Use the CLI interface for standardized inference
+- Configure appropriate inference batch sizes
+- Set up proper output directories for predictions
+- Ensure band compatibility between training and inference
+- Apply consistent pre- and post-processing
+- Configure visualization for outputs when needed
+- Document model requirements and dependencies
+- Save models using PyTorch format or export to ONNX (future feature)
+- Consider containerization using the provided Dockerfile
+
+## Code Organization
+- Follow PyTorch Lightning module structure
+- Implement clear separation between models, data, and tasks
+- Leverage TerraTorch registries for component discovery
+- Organize configurations by experiment type
+- Document configuration parameters thoroughly
+- Maintain compatibility with TorchGeo conventions
+- Create modular components that can be reused across projects
+- Use factory patterns for flexible model creation
+- Separate dataset implementation from model implementation
+- Follow TerraTorch's module naming conventions
+- Implement model interfaces consistently
+
+## Common Pitfalls
+- Ensure decoder compatibility with your encoder (check spatial dimensions)
+- Verify tensor dimensions throughout the model pipeline
+- Handle multi-channel data consistently (band ordering and normalization)
+- Configure appropriate post-backbone operations for ViT models
+- Address stackability issues in heterogeneous datasets
+- Set proper batch sizes based on memory constraints
+- Ensure proper device handling for distributed training
+- Monitor for overfitting with proper validation splits 

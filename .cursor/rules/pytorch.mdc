@@ -1,0 +1,74 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Best practices for developing with PyTorch
+globs: **/*.py
+---
+
+# PyTorch Development Best Practices
+
+## Model Architecture
+- Structure models using nn.Module subclasses
+- Define forward method clearly with typed inputs and outputs
+- Keep model components modular and reusable
+- Use nn.Sequential for simple sequential layers
+- Implement custom layers as separate nn.Module classes
+- Use nn.ModuleList or nn.ModuleDict for dynamic architectures
+- Initialize weights properly in __init__ or reset_parameters methods
+
+## Data Management
+- Implement custom datasets by subclassing torch.utils.data.Dataset
+- Use DataLoader with appropriate batch sizes and num_workers
+- Apply transforms consistently between training and evaluation
+- Pre-compute and cache expensive operations when possible
+- Use pinned memory for faster CPU to GPU transfers
+- Implement proper collate_fn for batching complex data
+- Consider using IterableDataset for streaming large datasets
+
+## Training Loop
+- Organize training with clear train/validation/test separation
+- Use proper device management (CPU/GPU/TPU)
+- Implement gradient accumulation for large models
+- Track metrics using torchmetrics or a similar library
+- Set model.train() and model.eval() appropriately
+- Use torch.no_grad() for validation/inference
+- Implement early stopping and checkpointing
+
+## Optimization
+- Choose optimizers based on model requirements
+- Implement learning rate schedules when appropriate
+- Use mixed-precision training (torch.cuda.amp) for faster training
+- Apply gradient clipping to prevent exploding gradients
+- Profile memory usage and computation bottlenecks
+- Use torch.compile for performance when available
+- Consider quantization for inference optimization
+
+## Testing and Debugging
+- Overfit a single batch to verify model capacity
+- Use small subsets of data for quick iteration
+- Implement unit tests for custom model components
+- Use torch.jit.trace to find errors in forward passes
+- Debug with hooks on forward/backward passes
+- Validate tensor shapes throughout the pipeline
+- Use model summary tools to verify architecture
+
+## Deployment
+- Export models with torch.jit.script or torch.jit.trace
+- Use torch.onnx for framework interoperability
+- Benchmark inference performance under production conditions
+- Implement proper error handling for production
+- Package dependencies correctly with requirements.txt
+- Consider TorchServe for model serving
+- Implement version control for models
+
+## Code Organization
+- Structure code with clear separation of concerns
+- Keep configuration separate from model implementation
+- Use config files or command-line arguments for hyperparameters
+- Implement logging for tracking experiments
+- Use a proper experiment tracking tool like TensorBoard or W&B
+- Maintain reproducibility with random seeds
+- Document model architecture and usage clearly 

@@ -1,0 +1,97 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Best practices for geospatial deep learning with TorchGeo
+globs: **/*.py
+---
+
+# TorchGeo Development Best Practices
+
+## Data Management
+- Use appropriate dataset classes for your data type:
+  - GeoDataset for raw geospatial data requiring spatial metadata
+  - NonGeoDataset for pre-processed benchmark datasets
+- Implement proper coordinate reference system (CRS) handling with dataset.crs parameter
+- Leverage indexed datasets for efficient spatiotemporal data access
+- Use dataset composition operators for combining datasets:
+  - Union (`|`) for treating multiple data sources as equivalent
+  - Intersection (`&`) for requiring data from both sources
+- Set appropriate sample sizes for geospatial patches
+- Handle cloud coverage and missing data with appropriate masks
+- Use windowed reading for efficient access to large rasters
+
+## Sampling Strategies
+- Use RandomGeoSampler for unbiased spatial sampling during training
+- Implement GridGeoSampler for systematic spatial coverage during evaluation
+- Configure sampler size parameter in pixels or CRS units using Units enum
+- Set appropriate batch_size and length parameters
+- Use batch samplers (RandomBatchGeoSampler) for efficient tile-based sampling
+- Define proper sampling units with the units parameter (Units.PIXELS or Units.CRS)
+- Implement stack_samples as collate_fn when creating DataLoader objects
+
+## Geospatial Transforms
+- Apply normalization specific to sensor characteristics
+- Use spectral indices transforms (NDVI, NDWI, etc.) to create additional features
+- Implement domain-specific augmentations for satellite imagery
+- Handle multi-channel data with channel-aware transformations
+- Apply transforms consistently between training and inference
+- Combine TorchGeo transforms with torchvision and Kornia transforms
+- Use AugmentationSequential for spatial-preserving transforms
+- Create custom transforms by extending Kornia's base classes
+
+## Model Architecture
+- Select architectures suitable for multi-spectral geospatial inputs
+- Configure models with appropriate in_channels for your data
+- Use pretrained weights for transfer learning:
+  - Sensor-specific weights (Sentinel-2, Landsat, NAIP)
+  - Domain-specific pretrained models (DOFA, SatMAE, etc.)
+- Use multi-weight API for accessing pretrained weights
+- Configure timm models with TorchGeo weights
+- Implement spatial attention mechanisms for geospatial context
+- Select appropriate model types based on your task:
+  - Classification models for scene labeling
+  - UNet/FCN for semantic segmentation
+  - Detection models for object identification
+
+## Training with Lightning
+- Use TorchGeo's Lightning-based trainers for specific tasks:
+  - ClassificationTask for scene classification
+  - SemanticSegmentationTask for pixel-level segmentation
+  - RegressionTask for continuous value prediction
+- Configure datamodules for standardized data loading
+- Set appropriate metrics for geospatial evaluation
+- Use Lightning callbacks for model checkpointing and early stopping
+- Implement learning rate scheduling for stable training
+- Log geospatial visualizations during training
+- Configure proper device accelerators (GPU/TPU)
+
+## CLI Integration
+- Use TorchGeo's command-line interface for experiment management
+- Define configurations in YAML or JSON format
+- Configure training hyperparameters through the CLI
+- Use fit, validate, and test subcommands appropriately
+- Pass custom model and data arguments through the CLI
+- Extend the CLI for custom workflows when needed
+- Structure experiments with proper versioning
+
+## Evaluation and Visualization
+- Assess both pixel-wise and object-based metrics
+- Implement proper stratified validation splits
+- Consider geographic generalization in evaluation
+- Evaluate performance across different regions
+- Account for class imbalance in metrics
+- Visualize predictions on maps for qualitative assessment
+- Use plot methods from dataset classes for visualization
+
+## Deployment
+- Export models appropriately for geospatial production systems
+- Implement sliding window inference for large rasters
+- Consider computational efficiency for large-scale mapping
+- Design proper pre- and post-processing pipelines
+- Implement robust error handling for geographic edge cases
+- Ensure proper CRS transformations in production
+- Document model limitations and geographic scope
+- Use torchscript or ONNX for deployment optimization 
