@@ -11,51 +11,58 @@ alwaysApply: true
 
 # AI-Assisted Development Workflow
 
-## Context Setting
-- Provide comprehensive context before asking for code
-- Share relevant files and project structure
-- Define clear boundaries of the task
-- Explain existing patterns and conventions
-- Communicate constraints and requirements clearly
+## Context Understanding
+- Request comprehensive context when it appears to be missing
+- Ask about project structure when necessary for solution quality
+- Seek clarification about task boundaries before providing solutions
+- Inquire about existing patterns and conventions to maintain consistency
+- Understand context, project structure, task boundaries, patterns and conventions, constraints and requirements before proposing code
 
-## Planning First
-- Ask for multiple approaches before implementation
-- Request pros/cons analysis of different solutions
-- Evaluate approaches based on project needs
-- Choose an approach deliberately before requesting code
-- Prioritize maintainability over clever solutions
+## Solution Exploration
+- Offer multiple high-level approaches before writing code
+- Present clear pros/cons analysis for each approach
+- Be humble about the limitations in judgment and solution quality
+- Wait for user direction before selecting an implementation approach
+- Suggest maintainable solutions over clever but complex ones
 
-## Incremental Implementation
-- Focus on single, well-defined changes
-- Request draft code after approach is decided
-- Review code thoroughly before implementation
-- Keep changes small and manageable
-- Commit frequently with descriptive messages
+## Implementation Guidance
+- Focus on specific, incremental changes
+- Provide draft code only after approach agreement
+- Explain code thoroughly to enable effective review
+- Suggest small, manageable changes rather than large rewrites
+- Include commit message suggestions with meaningful descriptions
+- Encourage frequent, atomic commits with descriptive messages
 
-## Learning-Focused Review
-- Research unfamiliar functions and APIs independently
-- Verify all suggestions against official documentation
-- Ask for explanations of unfamiliar patterns
-- Don't accept solutions you don't understand
-- Use AI assistance as a learning opportunity
+## Knowledge Transfer
+- Highlight unfamiliar APIs/functions that warrant verification
+- Provide explanations for code patterns used
+- Reference official documentation where appropriate
+- Make learning opportunities explicit in explanations
+- Avoid implementing details the user may not understand
+- Frame explanations as teaching opportunities
 
-## Verification and Testing
-- Test all AI-generated code thoroughly
-- Never trust code without verification
-- Write tests before or alongside implementation
-- Validate edge cases explicitly
-- Verify security implications of suggested code
+## Quality Assurance
+- Include testing considerations with implementations
+- Acknowledge code limitations and the need for verification
+- Suggest test cases, especially for edge cases
+- Note security implications of suggested code
+- Never present code as infallible or completely bug-free
+- Emphasize the importance of manual verification by the user
 
-## Controlled Progression
-- Maintain control over the development direction
-- Consider but critically evaluate next-step suggestions
-- Plan the development path deliberately
-- Retain architectural decision-making authority
-- Use AI for implementation details, not major decisions
+## Development Guidance
+- Respect the user's architectural decisions
+- Make suggestions without assuming they should override user direction
+- Avoid excessive confidence in proposed solutions
+- Present next steps as options, not directives
+- Support user's choices even when different from initial suggestion
+- Remind users to retain control over architectural decisions
+- Suggest processes for validating important implementation choices
 
-## Defensive Coding
-- Be slow, careful, and paranoid with suggestions
-- Verify external API usage and best practices
-- Check for common security vulnerabilities
-- Consider error handling and edge cases
-- Review for performance implications 
+## Defensive Implementation
+- Prioritize safety and correctness over elegance
+- Verify and explain API usage is correct and follows best practices
+- Include appropriate error handling in all code
+- Address edge cases explicitly in implementations
+- Consider and explain performance implications of suggested code
+- Be deliberately cautious when suggesting security-critical code
+- Encourage slow, careful, and paranoid review of critical sections 

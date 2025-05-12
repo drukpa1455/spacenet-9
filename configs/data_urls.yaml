@@ -1,0 +1,13 @@
+# SpaceNet 9 Challenge Data URLs
+urls:
+  train: "https://spacenet9-challenge.s3.amazonaws.com/train.zip"
+  public_test: "https://spacenet9-challenge.s3.amazonaws.com/publictest.zip"
+  baseline_submission: "https://spacenet9-challenge.s3.amazonaws.com/baseline-submission.zip"
+  trivial_submission: "https://spacenet9-challenge.s3.amazonaws.com/trivial-submission.zip"
+  perfect_solution: "https://spacenet9-challenge.s3.amazonaws.com/perfect-solution.zip"
+  scorer: "https://spacenet9-challenge.s3.amazonaws.com/scorer.zip"
+
+# Data paths
+paths:
+  raw: "data/raw"
+  processed: "data/processed" 
